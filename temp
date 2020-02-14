@@ -1,0 +1,80 @@
+#include<iostream>
+using namespace std;
+
+struct Node{
+    int val,cost;
+    Node* next;
+};
+
+struct Edge{
+    int src,dest,weight;
+};
+
+class Graph{
+    
+    Node* getAdjacencylist(int x,int c,Node* head){
+        Node* newnode = new Node;
+        newnode->val=x;
+        newnode->cost=c;
+        newnode->next=head;
+        return newnode;
+    }
+    int N;
+    public:
+
+    
+    Node** head;
+    Graph(Edge edge[],int n,int N){
+        this->N=N;
+        head=new Node*[N]();
+        for(int i=0;i<N;i++)
+            head[i]=nullptr;
+        for(int i=0;i<n;i++){
+        int src=edge[i].src;
+        int dest=edge[i].dest;
+        int cost=edge[i].weight;
+        Node* newnode=getAdjacencylist(dest,cost,head[src]);
+        head[src]=newnode;
+
+    }
+
+}
+};
+
+void print(Node* ptr,int i){
+    while(ptr!=nullptr){
+        cout<<i<<"->"<<ptr->val<<","<<ptr->cost<<"\n";
+        ptr=ptr->next;
+    }
+}
+
+
+int main()
+{
+	// array of graph edges as per above diagram.
+	Edge edge[] =
+	{
+		// (x, y, w) -> edge from x to y having weight w
+		{ 0, 1, 6 }, { 1, 2, 7 }, { 2, 0, 5 }, { 2, 1, 4 },
+		{ 3, 2, 10 }, { 4, 5, 1 }, { 5, 4, 3 }
+	};
+
+	// Number of vertices in the graph
+	int N = 6;
+
+	// calculate number of edges
+	int n = sizeof(edge)/sizeof(edge[0]);
+
+	// construct graph
+	Graph graph(edge, n, N);
+
+	// print adjacency list representation of graph
+	for (int i = 0; i < N; i++)
+	{
+		// print all neighboring vertices of vertex i
+		print(graph.head[i], i);
+	}
+
+	return 0;
+}
+
